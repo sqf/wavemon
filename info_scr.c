@@ -19,6 +19,9 @@
  */
 #include "iw_if.h"
 #include "iw_nl80211.h"
+#include <time.h>
+#include <sys/time.h>
+#include <string.h>
 
 /* GLOBALS */
 static WINDOW *w_levels, *w_stats, *w_if, *w_info, *w_net;
@@ -63,6 +66,18 @@ void sampling_stop(void)
 	pthread_join(sampling_thread, NULL);
 }
 
+//string getTime ()
+//{
+//	time_t rawtime;
+//	struct tm * timeinfo;
+//
+//	time ( &rawtime );
+//	timeinfo = localtime ( &rawtime );
+//	printf ( "Current local time and date: %s", asctime (timeinfo) );
+//
+//	return asctime (timeinfo);
+//}
+
 static void display_levels(void)
 {
 	static float qual, signal, noise, ssnr;
@@ -80,7 +95,8 @@ static void display_levels(void)
 
 
 	noise_data_valid = iw_nl80211_have_survey_data(&linkstat.data);
-	sig_level = linkstat.data.signal_avg ?: linkstat.data.signal;
+	//sig_level = linkstat.data.signal_avg ?: linkstat.data.signal;
+	sig_level = linkstat.data.signal;
 
 	/* See comments in iw_cache_update */
 	if (sig_level == 0)
@@ -172,6 +188,31 @@ static void display_levels(void)
 		sprintf(tmp, "%.0f dB", ssnr);
 		waddstr_b(w_levels, tmp);
 	}
+
+//	time_t t;
+//	time(&t);
+	FILE *fp;
+	char tekst[] = "Hello world";
+	if ((fp=fopen("test8.txt", "a"))==NULL) {
+		printf ("Can't open file test8.txt!\n");
+		exit(1);
+	}
+
+
+	struct timeval tp;
+	gettimeofday(&tp, 0);
+	time_t curtime = tp.tv_sec;
+	struct tm *t = localtime(&curtime);
+	printf("%d-%d-%d %02d:%02d:%02d:%06ld\n", t->tm_mday, t->tm_mon + 1, t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
+
+
+	fprintf (fp, "%d-%d-%d %02d:%02d:%02d:%06ld", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1);
+	fprintf (fp, " %d", linkstat.data.signal);
+	fprintf (fp, " %d", linkstat.data.signal_avg);
+    fprintf (fp, " %d", linkstat.data.bss_signal);
+    fprintf (fp, " %d\n", linkstat.data.bss_signal_qual);
+
+	fclose (fp);
 
 done_levels:
 	wrefresh(w_levels);
