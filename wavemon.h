@@ -186,7 +186,7 @@ enum wavemon_screen {
 	SCR_INFO,	/* F1 */
 	SCR_LHIST,	/* F2 */
 	SCR_SCAN,	/* F3 */
-	SCR_EMPTY_F4,	/* placeholder */
+	SCR_COUNT,	/* F4 */
 	SCR_EMPTY_F5,	/* placeholder */
 	SCR_EMPTY_F6,	/* placeholder */
 	SCR_PREFS,	/* F7 */
@@ -206,6 +206,10 @@ extern void scr_lhist_fini(void);
 extern void scr_aplst_init(void);
 extern int  scr_aplst_loop(WINDOW *w_menu);
 extern void scr_aplst_fini(void);
+
+extern void scr_count_init(void);
+extern int  scr_count_loop(WINDOW *w_menu);
+extern void scr_count_fini(void);
 
 extern void scr_conf_init(void);
 extern int  scr_conf_loop(WINDOW *w_menu);

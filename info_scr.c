@@ -291,7 +291,7 @@ static void display_stats(void)
 	wrefresh(w_stats);
 }
 
-static void display_info(WINDOW *w_if, WINDOW *w_info)
+void display_info(WINDOW *w_if, WINDOW *w_info)
 {
 	struct iw_dyn_info info;
 	struct iw_range	range;
@@ -579,7 +579,7 @@ static void display_info(WINDOW *w_if, WINDOW *w_info)
 	wrefresh(w_info);
 }
 
-static void display_netinfo(WINDOW *w_net)
+void display_netinfo(WINDOW *w_net)
 {
 	struct if_info info;
 	char tmp[0x40];

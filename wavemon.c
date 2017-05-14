@@ -54,11 +54,14 @@ static const struct {
 		.loop	  = scr_aplst_loop,
 		.fini	  = scr_aplst_fini
 	},
-	[SCR_EMPTY_F4]	= {
-		.key_name = "",
+	[SCR_COUNT]	= {
+		.key_name = "count",
+		.init	  = scr_count_init,
+		.loop	  = scr_count_loop,
+		.fini	  = scr_count_fini
 	},
 	[SCR_EMPTY_F5]	= {
-		.key_name = "",
+		.key_name = "configureCounting",
 	},
 	[SCR_EMPTY_F6]	= {
 		.key_name = "",
@@ -245,6 +248,10 @@ int main(int argc, char *argv[])
 				case KEY_F(3):
 					next = SCR_SCAN;
 					break;
+                case 'c':
+                case KEY_F(4):
+                    next = SCR_COUNT;
+                    break;
 				case 'p':
 				case KEY_F(7):
 					next = SCR_PREFS;
