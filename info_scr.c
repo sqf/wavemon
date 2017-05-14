@@ -191,28 +191,28 @@ static void display_levels(void)
 
 //	time_t t;
 //	time(&t);
-	FILE *fp;
-	char tekst[] = "Hello world";
-	if ((fp=fopen("test8.txt", "a"))==NULL) {
-		printf ("Can't open file test8.txt!\n");
-		exit(1);
-	}
-
-
-	struct timeval tp;
-	gettimeofday(&tp, 0);
-	time_t curtime = tp.tv_sec;
-	struct tm *t = localtime(&curtime);
-	printf("%d-%d-%d %02d:%02d:%02d:%06ld\n", t->tm_mday, t->tm_mon + 1, t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
-
-
-	fprintf (fp, "%d-%d-%d %02d:%02d:%02d:%06ld", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1);
-	fprintf (fp, " %d", linkstat.data.signal);
-	fprintf (fp, " %d", linkstat.data.signal_avg);
-    fprintf (fp, " %d", linkstat.data.bss_signal);
-    fprintf (fp, " %d\n", linkstat.data.bss_signal_qual);
-
-	fclose (fp);
+//	FILE *fp;
+//	char tekst[] = "Hello world";
+//	if ((fp=fopen("test8.txt", "a"))==NULL) {
+//		printf ("Can't open file test8.txt!\n");
+//		exit(1);
+//	}
+//
+//
+//	struct timeval tp;
+//	gettimeofday(&tp, 0);
+//	time_t curtime = tp.tv_sec;
+//	struct tm *t = localtime(&curtime);
+//	printf("%d-%d-%d %02d:%02d:%02d:%06ld\n", t->tm_mday, t->tm_mon + 1, t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
+//
+//
+//	fprintf (fp, "%d-%d-%d %02d:%02d:%02d:%06ld", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1);
+//	fprintf (fp, " %d", linkstat.data.signal);
+//	fprintf (fp, " %d", linkstat.data.signal_avg);
+//    fprintf (fp, " %d", linkstat.data.bss_signal);
+//    fprintf (fp, " %d\n", linkstat.data.bss_signal_qual);
+//
+//	fclose (fp);
 
 done_levels:
 	wrefresh(w_levels);
