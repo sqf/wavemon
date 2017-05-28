@@ -22,6 +22,9 @@
 #include <setjmp.h>
 
 /* GLOBALS */
+// Global variables for counting:
+char fileName[] = "default.txt";
+char filePath[] = "results/";
 
 /**
  * screen switching table
@@ -60,8 +63,11 @@ static const struct {
 		.loop	  = scr_count_loop,
 		.fini	  = scr_count_fini
 	},
-	[SCR_EMPTY_F5]	= {
+	[SCR_CONFCOUNT]	= {
 		.key_name = "configureCounting",
+        .init	  = scr_confCount_init,
+        .loop	  = scr_confCount_loop,
+        .fini	  = scr_confCount_fini
 	},
 	[SCR_EMPTY_F6]	= {
 		.key_name = "",
@@ -251,6 +257,10 @@ int main(int argc, char *argv[])
                 case 'c':
                 case KEY_F(4):
                     next = SCR_COUNT;
+                    break;
+                case 'v':
+                case KEY_F(5):
+                    next = SCR_CONFCOUNT;
                     break;
 				case 'p':
 				case KEY_F(7):

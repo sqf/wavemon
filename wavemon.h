@@ -47,6 +47,9 @@
  * plus the 'Fxx'). This value was also chosen since 24x80 is a very common
  * screen size, in particular allowing the use on the console.
  */
+
+extern char fileName[];
+extern char filePath[];
 enum info_screen_geometry {
 	WH_IFACE    = 2,	/* 'Interface' area at the top */
 	WH_LEVEL    = 9,	/* Level meters */
@@ -187,7 +190,7 @@ enum wavemon_screen {
 	SCR_LHIST,	/* F2 */
 	SCR_SCAN,	/* F3 */
 	SCR_COUNT,	/* F4 */
-	SCR_EMPTY_F5,	/* placeholder */
+	SCR_CONFCOUNT,	/* F5 */
 	SCR_EMPTY_F6,	/* placeholder */
 	SCR_PREFS,	/* F7 */
 	SCR_HELP,	/* F8 */
@@ -210,6 +213,10 @@ extern void scr_aplst_fini(void);
 extern void scr_count_init(void);
 extern int  scr_count_loop(WINDOW *w_menu);
 extern void scr_count_fini(void);
+
+extern void scr_confCount_init(void);
+extern int  scr_confCount_loop(WINDOW *w_menu);
+extern void scr_confCount_fini(void);
 
 extern void scr_conf_init(void);
 extern int  scr_conf_loop(WINDOW *w_menu);

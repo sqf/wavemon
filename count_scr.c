@@ -57,18 +57,6 @@ static void *sampling_loop(void *arg)
     return NULL;
 }
 
-//string getTime ()
-//{
-//	time_t rawtime;
-//	struct tm * timeinfo;
-//
-//	time ( &rawtime );
-//	timeinfo = localtime ( &rawtime );
-//	printf ( "Current local time and date: %s", asctime (timeinfo) );
-//
-//	return asctime (timeinfo);
-//}
-
 void sampling_init2()
 {
     linkstat.run = true;
@@ -88,16 +76,10 @@ void scr_count_init(void)
 
     w_if	 = newwin_title(line, WH_IFACE, "Interface", true);
     line += WH_IFACE;
-    w_levels = newwin_title(line, WH_LEVEL, "Levels", true);
-    line += WH_LEVEL;
-    w_stats	 = newwin_title(line, WH_STATS, "Statistics", true);
-    line += WH_STATS;
+    w_levels = newwin_title(line, 5, "Levels", true);
+    line += 5;
     w_info	 = newwin_title(line, WH_INFO_MIN, "Info", true);
-    line += WH_INFO_MIN;
-    if (LINES >= WH_INFO_SCR_MIN + (WH_NET_MAX - WH_NET_MIN))
-        w_net = newwin_title(line, WH_NET_MAX, "Network", false);
-    else
-        w_net = newwin_title(line, WH_NET_MAX, "Network", false);
+
 
     sampling_init2();
 }
@@ -151,26 +133,6 @@ void display_levels(void)
 
     line = 1;
 
-    /* Noise data is rare. Use the space for spreading out. */
-    if (!noise_data_valid)
-        line++;
-
-    if (sig_qual == -1) {
-        line++;
-    } else {
-        qual = ewma(qual, sig_qual, conf.meter_decay / 100.0);
-
-        mvwaddstr(w_levels, line++, 1, "link quality: ");
-        sprintf(tmp, "%0.f%%  ", (1e2 * qual)/sig_qual_max);
-        waddstr_b(w_levels, tmp);
-        sprintf(tmp, "(%0.f/%d)  ", qual, sig_qual_max);
-        waddstr(w_levels, tmp);
-
-        waddbar(w_levels, line++, qual, 0, sig_qual_max, lvlscale, true);
-    }
-
-    /* Spacer */
-    line++;
     if (!noise_data_valid)
         line++;
 
@@ -213,30 +175,33 @@ void display_levels(void)
         waddstr_b(w_levels, tmp);
     }
 
-//	time_t t;
-//	time(&t);
-//	FILE *fp;
-//	char tekst[] = "Hello world";
-//	if ((fp=fopen("test8.txt", "a"))==NULL) {
-//		printf ("Can't open file test8.txt!\n");
-//		exit(1);
-//	}
-//
-//
-//	struct timeval tp;
-//	gettimeofday(&tp, 0);
-//	time_t curtime = tp.tv_sec;
-//	struct tm *t = localtime(&curtime);
-//	printf("%d-%d-%d %02d:%02d:%02d:%06ld\n", t->tm_mday, t->tm_mon + 1, t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
-//
-//
-//	fprintf (fp, "%d-%d-%d %02d:%02d:%02d:%06ld", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1);
-//	fprintf (fp, " %d", linkstat.data.signal);
-//	fprintf (fp, " %d", linkstat.data.signal_avg);
-//    fprintf (fp, " %d", linkstat.data.bss_signal);
-//    fprintf (fp, " %d\n", linkstat.data.bss_signal_qual);
-//
-//	fclose (fp);
+	FILE *fp;
+    struct timeval tp;
+    gettimeofday(&tp, 0);
+    time_t curtime = tp.tv_sec;
+    struct tm *t = localtime(&curtime);
+
+    char* filePathWithName;
+    filePathWithName = malloc(strlen(filePath)+strlen(fileName)); /* make space for the new string (should check the return value ...) */
+    strcpy(filePathWithName, filePath); /* copy name into the new var */
+    strcat(filePathWithName, fileName); /* add the extension */
+
+	if ((fp=fopen(filePathWithName, "a"))==NULL) {
+		printf ("Can't open file ntest.txt!\n");
+		exit(1);
+	}
+
+
+	//printf("%d-%d-%d %02d:%02d:%02d:%06ld\n", t->tm_mday, t->tm_mon + 1, t->tm_year + 1900, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1000);
+
+
+	fprintf (fp, "%d-%d-%d %02d:%02d:%02d:%06ld", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tp.tv_usec/1);
+	fprintf (fp, " %d", linkstat.data.signal);
+	fprintf (fp, " %d", linkstat.data.signal_avg);
+    fprintf (fp, " %d", linkstat.data.bss_signal);
+    fprintf (fp, " %d\n", linkstat.data.bss_signal_qual);
+
+	fclose (fp);
 
     done_levels:
     wrefresh(w_levels);
